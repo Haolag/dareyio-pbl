@@ -1,22 +1,21 @@
-Project 2
+#Project 2
 
-Launch Git Bash and run following command:
+##Launch Git Bash and run following command:
 ssh -i <Your-private-key.pem> ubuntu@<EC2-Public-IP-address>
 
-![alt text](./images/1.jpg)
+![alt text](./images/a.png)
 
-Step 1 – Installing the Nginx Web Server
+##Step 1 – Installing the Nginx Web Server
 In order to display web pages to our site visitors, we are going to employ Nginx, a high-performance web server. We’ll use the apt package manager to install this package.
 
 Since this is our first time using apt for this session, start off by updating your server’s package index.
 $ sudo apt update
 
-![alt text](./images/2.png)
+![alt text](./images/b.png)
 
 Following that, you can use apt install to get Nginx installed:
 $ sudo apt install nginx
 
-![alt text](./images/3.png)
 ![alt text](./images/Nginx%20installed.PNG)
 
 To verify that nginx was successfully installed and is running as a service in Ubuntu, run:
@@ -26,7 +25,7 @@ $ sudo systemctl status nginx
 
 As we know, we have TCP port 22 open by default on our EC2 machine to access it via SSH, so we need to add a rule to EC2 configuration to open inbound connection through port 80:
 
-![alt text](./images/6.png)
+![alt text](./images/f.png)
 
 Our server is running and we can access it locally and from the Internet (Source 0.0.0.0/0 means ‘from any IP address’).
 
@@ -37,25 +36,25 @@ or
 $ curl http://127.0.0.1:80
 
 
-![alt text](./images/7.png)
+![alt text](./images/g.png)
 
 Now it is time for us to test how our Nginx server can respond to requests from the Internet. Open a web browser of your choice and try to access following url:
 http://<Public-IP-Address>:80
 
-![alt text](./images/8.png)
+![alt text](./images/c.png)
 
 Another way to retrieve your Public IP address, other than to check it in AWS Web console, is to use following command:
 
 curl -s http://169.254.169.254/latest/meta-data/public-ipv4
 
-![alt text](./images/9.png)
+![alt text](./images/d.png)
 
 If you see following page, then your web server is now correctly installed and accessible through your firewall.
 
 
-![alt text](./images/10.png)
+![alt text](./images/e.png)
 
-Step 2 — Installing MySQL
+##Step 2 — Installing MySQL
 Now that you have a web server up and running, you need to install a Database Management System (DBMS) to be able to store and manage data for your site in a relational database. MySQL is a popular relational database management system used within PHP environments, so we will use it in our project.
 
 Again, use apt to acquire and install this software:
@@ -69,37 +68,37 @@ $ sudo mysql_secure_installation
 This will ask if you want to configure the VALIDATE PASSWORD PLUGIN. Answer Y for yes, or anything else to continue without enabling.
 
 
-![alt text](./images/12.png)
+![alt text](./images/h.png)
 
 If you answer “yes”, you’ll be asked to select a level of password validation. Keep in mind that if you enter 2 for the strongest level, you will receive errors when attempting to set any password which does not contain numbers, upper and lowercase letters, and special characters, or which is based on common dictionary words.
 
-![alt text](./images/13.png)
+![alt text](./images/i.png)
 
 
 If you enabled password validation, you’ll be shown the password strength for the root password you just entered and your server will ask if you want to continue with that password. If you are happy with your current password, enter Y for “yes” at the prompt:
 
 
-![alt text](./images/14.png)
+![j](./images/j.png)
 
 For the rest of the questions, press Y and hit the ENTER key at each prompt. This will remove some anonymous users and the test database, disable remote root logins, and load these new rules so that MySQL immediately respects the changes you have made.
 
 
-![alt text](./images/15.png)
+![k](./images/k.png)
 
 When you’re finished, test if you’re able to log in to the MySQL console by typing:
 $ sudo mysql
 This will connect to the MySQL server as the administrative database user root, which is inferred by the use of sudo when running this command. You should see output like this:
 
-![alt text](./images/16.png)
+![alt text](./images/l.png)
 
 To exit the MySQL console, type:
 mysql> exit
 
-![alt text](./images/17.png)
+![alt text](./images/m.png)
 
 Your MySQL server is now installed and secured. Next, we will install PHP, the final component in the LEMP stack.
 
-Step 3 – Installing PHP
+##Step 3 – Installing PHP
 You’ll need to install php-fpm, which stands for “PHP fastCGI process manager”, and tell Nginx to pass PHP requests to this software for processing. Additionally, you’ll need php-mysql, a PHP module that allows PHP to communicate with MySQL-based databases. Core PHP packages will automatically be installed as dependencies.
 
 To install these 2 packages at once, run:
@@ -109,7 +108,7 @@ $ sudo apt install php-fpm php-mysql
 
 You now have your PHP components installed. Next, you will configure Nginx to use them.
 
-Step 4 — Configuring Nginx to Use PHP Processor
+##Step 4 — Configuring Nginx to Use PHP Processor
 When using the Nginx web server, we can create server blocks (similar to virtual hosts in Apache) to encapsulate configuration details and host more than one domain on a single server. In this guide, we will use projectLEMP as an example domain name.
 
 Create the root web directory for your_domain as follows:
@@ -119,7 +118,7 @@ $ sudo chown -R $USER:$USER /var/www/projectLEMP
 Then, open a new configuration file in Nginx’s sites-available directory using your preferred command-line editor. Here, we’ll use nano:
 $ sudo nano /etc/nginx/sites-available/projectLEMP
 
-![alt text](./images/19.png)
+![alt text](./images/n.png)
 
 
 This will create a new blank file. Paste in the following bare-bones configuration:
@@ -147,7 +146,7 @@ server {
 
 }
 
-![alt text](./images/20.png)
+![alt text](./images/p.png)
 
 When you’re done editing, save and close the file. If you’re using nano, you can do so by typing CTRL+X and then y and ENTER to confirm.
 
@@ -160,7 +159,7 @@ You shall see following message:
 nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
 nginx: configuration file /etc/nginx/nginx.conf test is successful
 
-![alt text](./images/21.png)
+![alt text](./images/q.png)
 
 We also need to disable default Nginx host that is currently configured to listen on port 80, for this run:
 $ sudo unlink /etc/nginx/sites-enabled/default
@@ -169,30 +168,30 @@ $ sudo systemctl reload nginx
 Your new website is now active, but the web root /var/www/projectLEMP is still empty. Create an index.html file in that location so that we can test that your new server block works as expected:
 sudo echo 'Hello LEMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectLEMP/index.html
 
-![alt text](./images/22.png)
+![alt text](./images/r.png)
 
 Now go to your browser and try to open your website URL using IP address:
 http://<Public-IP-Address>:80
 
-![alt text](./images/23.png)
+![alt text](./images/s.png)
 
 
 You can also access your website in your browser by public DNS name, not only by IP - try it out, the result must be the same (port is optional)
 http://<Public-DNS-Name>:80
 
-![alt text](./images/24.png)
+![alt text](./images/t.png)
 
 
 If you see the text from ‘echo’ command you wrote to index.html file, then it means your Nginx site is working as expected. In the output you will see your server’s public hostname (DNS name) and public IP address.
 
 
 
-![alt text](./images/25.png)
+![alt text](./images/u.png)
 
 
 Your LEMP stack is now fully configured. In the next step, we’ll create a PHP script to test that Nginx is in fact able to handle .php files within your newly configured website.
 
-Step 5 – Testing PHP with Nginx
+##Step 5 – Testing PHP with Nginx
 Your LEMP stack should now be completely set up.
 
 You can test it to validate that Nginx can correctly hand .php files off to your PHP processor by creating a test PHP file in your document root. Open a new file called info.php within your document root in your text editor:
@@ -200,7 +199,7 @@ $ nano /var/www/projectLEMP/info.php
 Type or paste the following lines into the new file. This is valid PHP code that will return information about your server:
 
 
-![alt text](./images/26.png)
+![alt text](./images/v.png)
 
 
 You can now access this page in your web browser by visiting the domain name or public IP address you’ve set up in your Nginx configuration file, followed by /info.php:
@@ -208,7 +207,7 @@ http://`server_domain_or_IP`/info.php
 You will see a web page containing detailed information about your server:
 
 
-![alt text](./images/27.png)
+![alt text](./images/w.png)
 
 
 After checking the relevant information about your PHP server through that page, it’s best to remove the file you created as it contains sensitive information about your PHP environment and your Ubuntu server. You can use rm to remove that file:
@@ -216,9 +215,10 @@ After checking the relevant information about your PHP server through that page,
 $ sudo rm /var/www/your_domain/info.php
 
 
-![alt text](./images/28.png)
+![alt text](./images/x.png)
 
-tep 6 — Retrieving data from MySQL database with PHP
+
+##Step 6 — Retrieving data from MySQL database with PHP
 In this step you will create a test database (DB) with simple “To do list” and configure access to it, so the Nginx website would be able to query data from the DB and display it.
 
 We will create a database named example_database and a user named example_user, but you can replace these names with different values.
@@ -228,7 +228,7 @@ $ sudo mysql
 To create a new database, run the following command from your MySQL console:
 mysql> CREATE DATABASE `example_database`;
 
-![alt text](./images/29.png)
+![alt text](./images/y.png)
 
 
 The following command creates a new user named example_user, using mysql_native_password as default authentication method. We’re defining this user’s password as password, but you should replace this value with a secure password of your own choosing.
@@ -236,27 +236,24 @@ The following command creates a new user named example_user, using mysql_native_
 mysql>  CREATE USER 'example_user'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
 
 
-![alt text](./images/1.png)
-
-
 Now we need to give this user permission over the example_database database:
 mysql> GRANT ALL ON example_database.* TO 'example_user'@'%';
 
 
-![alt text](./images/30.png)
+![alt text](./images/z.png)
 
 This will give the example_user user full privileges over the example_database database, while preventing this user from creating or modifying other databases on your server.
 
 Now exit the MySQL shell with:
 mysql> exit
 
-![alt text](./images/31.png)
+![alt text](./images/a1.png)
 
 
 You can test if the new user has the proper permissions by logging in to the MySQL console again, this time using the custom user credentials:
 $ mysql -u example_user -p
 
-![alt text](./images/32.png)
+![alt text](./images/a2.png)
 
 Notice the -p flag in this command, which will prompt you for the password used when creating the example_user user.
 
@@ -272,7 +269,7 @@ This will give you the following output:
 +--------------------+
 2 rows in set (0.000 sec)
 
-![alt text](./images/33.png)
+![alt text](./images/a3.png)
 
 Next, we’ll create a test table named todo_list. From the MySQL console, run the following statement:
 CREATE TABLE example_database.todo_list (
@@ -285,7 +282,7 @@ mysql> INSERT INTO example_database.todo_list (content) VALUES ("My first import
 To confirm that the data was successfully saved to your table, run:
 mysql>  SELECT * FROM example_database.todo_list;
 
-![alt text](./images/34.png)
+![alt text](./images/a4.png)
 
 You’ll see the following output:
 
@@ -299,14 +296,14 @@ You’ll see the following output:
 +---------+--------------------------+
 4 rows in set (0.000 sec)
 
-![alt text](./images/35.png)
+![alt text](./images/a5.png)
 
 
 After confirming that you have valid data in your test table, you can exit the MySQL console:
 mysql> exit
 
 
-![alt text](./images/36.png)
+![alt text](./images/a6.png)
 
 
 Now you can create a PHP script that will connect to MySQL and query for your content.
@@ -322,14 +319,15 @@ $table = "todo_list";
 
 
 
-![alt text](./images/38.png)
+![alt text](./images/a7.png)
 
 
 You can now access this page in your web browser by visiting the domain name or public IP address configured for your website, followed by /todo_list.php:
 http://<Public_domain_or_IP>/todo_list.php
 You should see a page like this, showing the content you’ve inserted in your test table:
 
-![alt text](./images/39.png)
+![alt text](./images/a8.png
+)
 
 
 In this guide, we have built a flexible foundation for serving PHP websites and applications to your visitors, using Nginx as web server and MySQL as database management system.
