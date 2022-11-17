@@ -3,13 +3,13 @@
 The command below updates a list of packages in package manager
 sudo apt update
 
-![Apatche2 intalled and running](./Apatche2 intalled and running.png)
+![Apatche2 intalled and running](./images/Apache2%20installed%20and%20running.PNG)
 
 The command below runs apache2 package installation
 sudo apt install apache2
 
 
-![Apache2 Ubuntu Default Page](./Apache2 Ubuntu Default Page.png)
+![Apache2 Ubuntu Default Page](./images/Apache2%20Ubuntu%20Default%20Page.PNG)
 
 The command below verifies that apache2 is running as a Service in our OS
 sudo systemctl status apache2
@@ -17,41 +17,41 @@ sudo systemctl status apache2
 See output below
 
 
-![Apatche Installed](./Apatch installed.png)
+![Apatche Installed](./images/Apatch%20installed.PNG)
 
 Opened TCP port 80 in the EC2 Instance
 
-![Opened TCP port](./4.png)
+![Opened TCP port](./images/4.png)
 
 The below command check if Apache can be accessed locally
 curl http://localhost:80
 
 Output to check if we can access the apache2 locally
 
-![Output](./5.png)
+![Output](./images/5.png)
 
 Test verify that apache server is running over the browser
 
-![Local host](./Local host.png)
+![Local host](./images/Local%20host.PNG)
 
 ## STEP 2 — INSTALLING MYSQL
 
 The command below runs mysql-server installation
 sudo apt install mysql-server
 
-git ![mysql-server](./7.png)
+git ![mysql-server](./images/7.png)
 
 The command below runs mysql-secure installation
 sudo mysql_secure_installation
 
 Ouput of the secure installation
 
-![alt text](./installing mysql.png)
+![Installing mysql](./images/installing%20mysql.PNG)
 
 This code verifies that we can log in to the MySQL server
 sudo mysql
 
-![sudo mysql](./9.png)
+![sudo mysql](./images/9.png)
 
 ## STEP 3 — INSTALLING PHP
 
@@ -60,14 +60,14 @@ sudo apt install php libapache2-mod-php php-mysql
 
 Ouput of the php installation
 
-![php installed](./php installed.png)
+![php installed](./images/php%20installed.PNG)
 
 The command below confirms php version
 php -v
 
 Ouput of the php version
 
-![Output of Php](./11.png)
+![Output of Php](./images/11.png)
 
 ## STEP 4 — CREATING A VIRTUAL HOST FOR YOUR WEBSITE USING APACHE
 
@@ -91,7 +91,7 @@ sudo ls /etc/apache2/sites-available
 
 Output Below
 
-![alt text](./12.png)
+![alt text](./images/12.png)
 
 The new virtualhost enabled with the below command
 sudo a2ensite projectlamp
@@ -107,14 +107,14 @@ to edit the /etc/apache2/mods-enabled/dir.conf file and change the order in whic
 
 See Output of the above commands below
 
-![alt text](./13.png)
+![alt text](./images/13.png)
 
 Index.html file was created in the /var/www/projectlamp location to test if the virtual host works fine with the command below
 sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectlamp/index.html
 
 Output Below
 
-![alt text](./14.png)
+![alt text](./images/14.png)
 
 ## STEP 5 — ENABLE PHP ON THE WEBSITE
 
@@ -124,22 +124,23 @@ sudo vim /etc/apache2/mods-enabled/dir.conf
 The command as showm in the screenshot was used
 
 
-![alt text](./15.png)
+![alt text](./images/15.png)
 
 After saving and closing the file, Apache was reloaded so the changes could take effect, the command below was used
 sudo systemctl reload apache2
 
-![alt text](./16.png)
+![alt text](./images/16.png)
 
 Create a new file named index.php inside your custom web root folder
 vim /var/www/projectlamp/index.php
 
 The php code as shown in the screenshot was added to the newly created file
 
-![alt text](./18.png)
+![alt text](./images/17.png)
+![alt text](./images/18.png)
 
 Below was the output on the web browser after it was refreshed
 
 
 ![ProjectLamp conf](./ProjectLamp conf.PNG)
-![alt text](./19.png)
+![alt text](./images/19.png)
