@@ -1,4 +1,4 @@
-Aux Project
+#Aux Project
 
 Launch ubuntu instance on aws
 
