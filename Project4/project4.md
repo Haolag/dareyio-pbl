@@ -1,6 +1,6 @@
-##Project 4
+#Project 4
 
-#Install Ec2 instance
+##Install Ec2 instance
 
 ![alt text](./images/Screenshot_2.png)
 
@@ -17,7 +17,7 @@
 ![alt text](./images/Screenshot_10.png)
 
 
-install certificates
+##install certificates
 
 ![alt text](./images/Screenshot_11.png)
 
