@@ -21,14 +21,14 @@ See output below
 
 Opened TCP port 80 in the EC2 Instance
 
-![Opened TCP port](./images/4.png)
+![Opened TCP port](./images/TCP%20Port.png)
 
 The below command check if Apache can be accessed locally
 curl http://localhost:80
 
 Output to check if we can access the apache2 locally
 
-![Output](./images/5.png)
+![Apachee locally](./images/Apache2%20locally.png)
 
 Test verify that apache server is running over the browser
 
@@ -39,7 +39,8 @@ Test verify that apache server is running over the browser
 The command below runs mysql-server installation
 sudo apt install mysql-server
 
-git ![mysql-server](./images/7.png)
+![mysql-server1](./images/mysql-server1.png)
+
 
 The command below runs mysql-secure installation
 sudo mysql_secure_installation
@@ -51,7 +52,7 @@ Ouput of the secure installation
 This code verifies that we can log in to the MySQL server
 sudo mysql
 
-![sudo mysql](./images/9.png)
+![sudo mysql](./images/sudo%20mysql.png)
 
 ## STEP 3 — INSTALLING PHP
 
@@ -67,7 +68,7 @@ php -v
 
 Ouput of the php version
 
-![Output of Php](./images/11.png)
+![Output of Php](./images/output%20of%20php.png)
 
 ## STEP 4 — CREATING A VIRTUAL HOST FOR YOUR WEBSITE USING APACHE
 
@@ -91,7 +92,7 @@ sudo ls /etc/apache2/sites-available
 
 Output Below
 
-![alt text](./images/12.png)
+![site available](./images/site%20available.png)
 
 The new virtualhost enabled with the below command
 sudo a2ensite projectlamp
@@ -107,14 +108,14 @@ to edit the /etc/apache2/mods-enabled/dir.conf file and change the order in whic
 
 See Output of the above commands below
 
-![alt text](./images/13.png)
+![apache reload](./images/apache%20reload.png)
 
 Index.html file was created in the /var/www/projectlamp location to test if the virtual host works fine with the command below
 sudo echo 'Hello LAMP from hostname' $(curl -s http://169.254.169.254/latest/meta-data/public-hostname) 'with public IP' $(curl -s http://169.254.169.254/latest/meta-data/public-ipv4) > /var/www/projectlamp/index.html
 
 Output Below
 
-![alt text](./images/14.png)
+![index.html](./images/index%20html.png)
 
 ## STEP 5 — ENABLE PHP ON THE WEBSITE
 
@@ -124,23 +125,21 @@ sudo vim /etc/apache2/mods-enabled/dir.conf
 The command as showm in the screenshot was used
 
 
-![alt text](./images/15.png)
+![mods enabled](./images/mods%20enabled.png)
 
 After saving and closing the file, Apache was reloaded so the changes could take effect, the command below was used
 sudo systemctl reload apache2
 
-![alt text](./images/16.png)
+![systemctl1](./images/systemctl.png)
 
 Create a new file named index.php inside your custom web root folder
 vim /var/www/projectlamp/index.php
 
 The php code as shown in the screenshot was added to the newly created file
 
-![alt text](./images/17.png)
-![alt text](./images/18.png)
+![php code](./images/php%20code.png)
+
 
 Below was the output on the web browser after it was refreshed
 
-
-![ProjectLamp conf](./ProjectLamp conf.PNG)
-![alt text](./images/19.png)
+![ProjectLamp conf](./images/ProjectLamp%20conf.PNG)
