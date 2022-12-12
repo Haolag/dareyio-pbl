@@ -1,10 +1,10 @@
 ## LOAD BALANCER SOLUTION WITH APACHE
-![](images/lb.png)
-![](images/prerequisites-project8.png)
+![](./images/lb.png)
+![](./images/prerequisites-project8.png)
 # **Step 1: Configure architecture from project 7**
 In project seven, We extended our 3- tier architecture for website by adding an NFS server. NFS holds static files shared across the webserver. This architecture makes our webservers stateless. However In our previous architecture, it implies we wll need to access each webserver directly from its public IP. This is not a good use of our resources because one server may unintentionally process all the request.   
 To solve this problem, we need a single point of entry which routes traffic accross our webserver(3). Depending our configuration, the webserver can equally share the incoming request.
-![](images/prerequisites-project8.png)
+![](./images/prerequisites-project8.png)
 
 
 **Load Balancers** provide this single point of entry. They can be software based or hardware based. Examples of software based load balancer are:
@@ -12,14 +12,14 @@ To solve this problem, we need a single point of entry which routes traffic accr
 - Nginx
 
 # **Step 2: Configure Apache as a Load Balancer**
-![](images/apache%20installed.PNG)
+![](./images/apache%20installed.PNG)
 
 ## Your instances should look something like this: 
- ![](images/instances1.PNG)
-![](images/instances.png)
+ ![](./images/instances1.PNG)
+![](./images/instances.png)
   
 ## Open TCP 80 on the instance's security group
-![](images/sg.png)
+![](./images/sg.png
 
 ## Install Apache
 Step-0 Prerequisites
@@ -28,7 +28,7 @@ Step-0 Prerequisites
 - One MySQL DB Server (based on Ubuntu 20.04)
 
 - One RHEL8 NFS server
-![](images/apache%20installed.PNG)
+![](./images/apache%20installed.PNG)
 
 ### Configure Apache As A Load Balancer
 
@@ -37,7 +37,7 @@ Step-0 Prerequisites
 - Open TCP port 80 on Project-8-apache-lb
 
 - Install Apache Load Balancer on Project-8-apache-lb server and configure it to point traffic coming to LB to both Web Servers:
-![](images/Apached%20correctly%20installed.PNG)
+![](./images/Apached%20correctly%20installed.PNG)
     
         #Install apache2
         sudo apt update
@@ -56,7 +56,7 @@ Step-0 Prerequisites
   `sudo systemctl restart apache2`
 - Make sure apache2 is up and running
   `sudo systemctl status apache2`
-  ![](images/Apache%20running%20status.PNG)
+  ![](./images/Apache%20running%20status.PNG)
   
 - Configure load balancing:
       sudo vi /etc/apache2/sites-available/000-default.conf
@@ -73,7 +73,7 @@ Step-0 Prerequisites
         ProxyPreserveHost On
         ProxyPass / balancer://mycluster/
         ProxyPassReverse / balancer://mycluster/
-![](images/load%20balancer%20IP.PNG)
+![](./images/load%20balancer%20IP.PNG)
 
        #Restart apache server
 
@@ -83,7 +83,7 @@ Step-0 Prerequisites
    
     Run sudo tail -f /var/log/httpd/access_log on both servers and check the outputs (refresh your browser a couple or more times)
     ```
-  ![](images/lb.png)
+  ![](./images/lb.png)
 
   `http://<Load-Balancer-Public-IP-Address-or-Public-DNS-Name>/index.php`
 
@@ -92,9 +92,9 @@ Step-0 Prerequisites
 - Open two ssh/Putty consoles for both Web Servers and run following command:
 
   `sudo tail -f /var/log/httpd/access_log`
-![](images/host%20file.PNG)
+![](./images/host%20file.PNG)
 
 
 - You should see something like the screenshot below:
 ![](images/app.png
-![](images/Tooling-Website-Infrastructure-wLB.png)
+![](./images/Tooling-Website-Infrastructure-wLB.png)
