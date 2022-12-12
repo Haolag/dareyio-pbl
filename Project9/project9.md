@@ -1,12 +1,18 @@
 # Step 1: Install Jenkins Server
+ ![](images/add_jenkins.png)
+
 - ## Using the same architecture and configuration from project 8.
-  ![](imgs/instances.png)
+  ![](images/instances.png)
 - ## Launch a new Ubuntu Server named Jenkins
+![](images/initial%20Jenkins%20setup.PNG)
+
 - ## Install JDK (Jenkins is a Java based application)
     ```
     sudo apt update
     sudo apt install default-jdk-headless
     ```
+![](images/JDK%20Installed.PNG)
+
 - ## Install Jenkins
     ```
     wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
@@ -17,12 +23,17 @@
     sudo apt update
     sudo apt-get install jenkins
     ```
+![](images/jenkins%20installed.PNG)
+
 - ## Make sure Jenkins service is running.
     ```
     sudo systemctl status jenkins
     ```
+    ![](images/jenkins%20ready.PNG)
+
 - ## Open TCP port 8080 on Jenkins server's security group
-    ![](imgs/sg.png)
+    ![](images/custom%20TCP.PNG)
+
 - ## Perform initial Jenkins setup
   - Open \<Jenkins-Server-Public-IP>:8080 on your web browser
   - When prompted for default admin password, run
@@ -32,6 +43,7 @@
       Copy and paste in the field provided.
   - Choose install suggested plugins.
   - Create admin user.
+![](images/initial%20Jenkins%20setup.PNG)
 
 # Step 2: Configure Jenkins to retrieve source code from GitHub using WebHooks
 - ## Enable WebHooks in GitHub repo settings
@@ -42,12 +54,14 @@
   - Enter \<Jenkins-server-public-ip>:8080/github-webhook/
   - For content type, select application/json
   - Leave everything else and click add webhook
-    ![](imgs/webhook.png)
+    ![](images/webhook.png)
+
 - ## Go to Jenkins web console, click “New Item” and create a “Freestyle project”
   - Under Source Code Management, select Git
   - Paste the repo URL, and add your GitHub account credentials
   - Save the configuration and click "Build Now" to trigger a manual build.
-    ![](imgs/manual.png)
+    ![](images/manual.png)
+
   - Click configure for your job and:
     - Select GitHub Hook trigger for GitScm polling
     - Configure Post Build Actions to archive the artifacts
@@ -58,7 +72,8 @@
   - On main dashboard, select Manage Jenkins and then select Manage Plugins
   - Click "Available" tab and in the search bar, enter "Publish Over ssh"
   - Check the box next to the plugin and click "Install without restart"
-    ![](imgs/plugin.png)
+    ![](images/plugin.png)
+
 - ## Configure the job/project to copy artifacts over to NFS server.
   - On main dashboard select Manage Jenkins and then Configure System
   - Scroll down to Publish Over SSH plugin configuration and:
@@ -72,4 +87,10 @@
     - Since we want to copy all files, enter ** in the "Source files" field.
   - Save the configuration
   - Edit a file on repo and ensure the job builds successfully, automatically.
-  ![](imgs/build.png)
+   ![](images/build.png)
+   ![](images/Build%20Artifact.PNG)
+    ![](images/build1.PNG)
+     ![](images/build2.PNG)
+      ![](images/build3.PNG)
+       ![](images/console%20output.PNG)
+        ![](images/)
