@@ -1,47 +1,41 @@
-Project 11
+# Project 11
+![alt text](./images/bastion.png)
 
-Updaate jenkins server tag
+## Updaate jenkins server tag
 
-![alt text](./tags.png)
+![alt text](./images/EC2%20intances.PNG)
 
-Create a new Repo on Github
+## Create a new Repo on Github
 
-![alt text](./tags.png)
+![alt text](./images/Github%20repo.PNG)
 
-sudo apt update
+## sudo apt update
 
-sudo apt install ansible
+## sudo apt install ansible
 
-![alt text](./sudoansi.png)
+![alt text](./images/anible%20installed.PNG)
 
 Create a new Freestyle project ansible in Jenkins and point it to your ‘ansible-config-mgt’ repository.
 
-![alt text](./anssy.png)
+![alt text](./images/ansible%20version.PNG)
+
+## Configure Webhook in GitHub and set webhook to trigger ansible build.
+
+![alt text](./images/webhook%20setting.PNG)
 
 
+## Configure a Post-build job to save all (**) files, like i did it in Project 9.
 
+![alt text](./images/postbuild%20jenkins%20setting.PNG)
 
-Configure Webhook in GitHub and set webhook to trigger ansible build.
-
-
-![alt text](./web.png)
-
-
-
-Configure a Post-build job to save all (**) files, like i did it in Project 9.
-
-
-![alt text](./Screenshot_1.png)
-
-![alt text](./Screenshot_2.png)
-
-Test my setup by making some change in README.MD file in master branch and make sure that builds starts automatically and Jenkins saves the files (build artifacts) in following folder
+## Test my setup by making some change in README.MD file in master branch and make sure that builds starts automatically and Jenkins saves the files (build artifacts) in following folder
 ls /var/lib/jenkins/jobs/ansible/builds/<build_number>/archive/
 
 
-![alt text](./proof.png)
+![alt text](./images/jnkins%20jobs%20archive.PNG)
 
-BEGIN ANSIBLE DEVELOPMENT
+
+## BEGIN ANSIBLE DEVELOPMENT
 
 In my ansible-config-mgt GitHub repository, created a new branch that will be used for development of a new feature.
 
@@ -57,23 +51,25 @@ load new terminal, pick gitbash as terminal type, will ask you to navigate to fo
 
 Create a new branch
 
-![alt text](./newbranch.png)
+![alt text](./images/inventory%20and%20playbook%20files.PNG)
 
-Create a directory and name it playbooks – it will be used to store all your playbook files.
+## Create a directory and name it playbooks – it will be used to store all your playbook files.
 
 mkdir playbooks
 
-![alt text](./playbooks.png)
+![alt text](./images/inventory%20and%20playbook%20files.PNG)
 
-Create a directory and name it inventory – it will be used to keep your hosts organised.
 
-![alt text](./inventory.png)
+## Create a directory and name it inventory – it will be used to keep your hosts organised.
 
-Within the inventory folder, create an inventory file (.yml) for each environment (Development, Staging Testing and Production) dev, staging, uat, and prod respectively.
+![alt text](./images/dev%20inventory.PNG)
 
-![alt text](./yml.png)
+## Within the inventory folder, create an inventory file (.yml) for each environment (Development, Staging Testing and Production) dev, staging, uat, and prod respectively.
 
-Lets add SSH agents
+![alt text](./images/dev%20inventory.PNG)
+
+
+## Lets add SSH agents
 
 Install Open SSH with instructions in link below
 
@@ -82,17 +78,14 @@ https://docs.microsoft.com/en-us/windows-server/administration/openssh/openssh_i
 
 Open powershell
 
-![alt text](./ssh.png)
+![alt text](./images/ssh%20key%20added.PNG)
 
-![alt text](./ssh2.png)
+## Test if you can login to NFS and other servers via ansible on terminal without pem key
 
-Test if you can login to NFS and other servers via ansible on terminal without pem key
+![alt text](./images/ssh%20key%20added.PNG)
 
-![alt text](./test.png)
 
-Go to ansible project on vs code
-
-![alt text](./assy.png)
+## Go to ansible project on vs code
 
 Update dev.yml
 
@@ -127,110 +120,43 @@ If the reviewer is happy with your new feature development, merge the code to th
 
 Head back on your terminal, checkout from the feature branch into the master, and pull down the latest changes.
 
-![alt text](./pull.png)
+![alt text](./images/common%20file.PNG)
 
-![alt text](./pull2.png)
 
-Check jenkins
+## Check jenkins
 
-![alt text](./jenkins.png)
+![alt text](./images/jnkins%20jobs%20archive.PNG)
 
 
 Once your code changes appear in master branch – Jenkins will do its job and save all the files (build artifacts) to /var/lib/jenkins/jobs/ansible/builds/<build_number>/archive/ directory on Jenkins-Ansible server.
 
 
-![alt text](./see.png)
-
-
-ANSIBLE TEST
+## ANSIBLE TEST
 
 
 Connect to ansible /jenkins server
 
-![alt text](./ubuntu.png)
+![alt text](./images/build1.PNG)
+![alt text](./images/build2%20triggered.PNG)
+![alt text](./images/build%20artifact.PNG)
+![alt text](./images/build%20artifact1.PNG)
+![alt text](./images/build4%20artifacts.PNG)
 
 
-Some problems came up.
+## Confirm wireshark install on the servers.
 
-Kept timing out when tried to connect. Troubleshhot.
 
-Checked ec2 and found out that the jenkins server had an error.
-
-![alt text](./j.png)
-
-So i stopped and started the instance.
-
-This gave the instance a new ip. So i decided to get a elastic ip and attach it to the jenkins-ansible server.
-
-![alt text](./kk.png)
-![alt text](./k.png)
+![alt text](./images/wireshake%20confirmed.PNG)
 
 
 
-So i had to change the config in webhook in github ansible project
+## Go back to git terminal
 
-
-![alt text](./kkk.png)
-
-And do another build.
-
-Now i opened the remote server. It faiiled 4 times and i kept clicking retry.
-
-![alt text](./remote.png)
-
-Now run
-
-ansible-playbook -i /var/lib/jenkins/jobs/ansible/builds/9/archive/inventory/dev.yml /var/lib/jenkins/jobs/ansible/builds/9/archive/playbooks/common.yml 
-
-It failed
-
-![alt text](./stuck.png)
-
-I checked the dev.yml
-
-![alt text](./user.png)
-
-The db server is ubuntu and not redhat, so i corrected the ssh user in dev.yml to ubuntu.
-
-I also noticed that the db server is listed as redhat instead of ubuntu on so i corrected that.
-
-It worked
-
-![alt text](./success.png)
-
-
-Confirm wireshark install on the servers.
-
-Webserver 2
-
-![alt text](./webserver2.png)
-
-
-Webserver 1
-
-![alt text](./wire1.png)
-
-Nfs server
-
-![alt text](./nfs.png)
-
-Db server
-
-![alt text](./db.png)
-
-LB server
-
-![alt text](./lb.png)
-
-Go back to git terminal
-
-git checkout prj-11
+git checkout project-11
 
 Run the commands
 
 Update the playbook
-
-![alt text](./playbook-updated.png)
 
 Sync with github
 
@@ -243,14 +169,8 @@ Success
 
 Check if it worked on NFS server
 
-![alt text](./final.png)
+![alt text](./images/2nd%20task.PNG)
+![alt text](./images/task2.PNG)
+![alt text](./images/final%20result.PNG)
 
-
-
-
-
-
-
-
-
-
+![alt text](./images//jenkins_ansible.png)
