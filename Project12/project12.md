@@ -1,291 +1,197 @@
-Project 12
-
-Install Ubuntu Instance with Scripts loaded to run on deployment.
-
-#!/usr/bin/bash
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee \
- /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-    https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-    /etc/apt/sources.list.d/jenkins.list > /dev/null
-sudo apt-get update -y
-  sudo apt-get install fontconfig openjdk-11-jre -y
-  sudo apt-get install jenkins
-
-  
-  Add the ubuntun server pem key to ssh agent on local pc
-
-
-![alt text](./sshadd.png)
-
-Confirm that Jenkins is inatlled
-
-
-![alt text](./seejenkins.png)
-
-
-![alt text](./jjp.png)
-
-
-Run sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-
-to get scret key
-
-Pass as pssword.
-
-install suggested plugins
-
-![alt text](./plugins.png)
-
-
-Update Webhook in github.
-
-Open ansible repo and go to settings - update ip.
-
-
-![alt text](./webby.png)
-
-Go to Jenkins and do a build.
-
-![alt text](./build.png)
-
-Go to your Jenkins-Ansible server and create a new directory called ansible-config-artifact – we will store there all artifacts after each build.
-
-sudo mkdir /home/ubuntu/ansible-config-artifact
-
-Change Dir Permissions
-
-sudo chmod -R 0777 /home/ubuntu/ansible-config-artifact
-
-or 
-
-sudo chmod -R 0777 /home
-
-Go to Jenkins web console -> Manage Jenkins -> Manage Plugins -> on Available tab search for Copy Artifact and install this plugin without restarting Jenkins
-
-![alt text](./artifact.png)
-
-Create a new Freestyle project and name it save_artifacts.
-
-
-![alt text](./save.png)
-
-
-Configured with following things
-
-![alt text](./trigger.png)
-
-name should be project12 not ansible in our case.
-
-Edit Readme file in Ansible Repo on github
-
-check if push worked?
-
-Success
-
-![alt text](./7.png)
-
-
-![alt text](./77.png)
-
-Create static-assignements folder in ansible repo
-and create site.yml under playboook folder
-
-
-![alt text](./see.png)
-
-Move common.yml into static assignments folder
-
-
-![alt text](./move.png)
-
-Push to github.
-
-Now connect to remote host of jenkins-ansible server.
-
-I did was not seeing the full folders and files i pushed.
-
-So i went back to my project 12 config in jenkins
-
-I changed the branch to main, since vscode pushed to main branch.
-
-How do i know?
-
-I went to github and saw that the main branch had the files i pushed and master was outdated.
-
-To test i edited the README.md file on main branch and saved and lo and behold check project 12 in jenkins and a build was triggered successfully.
-
-Now connect to remote host. Files were showing now.
-
-I ran
-
-ansible all -m ping
-
-and it said ansible not installed.
-
-So i went back to other vscode window to install ansible.
-
-This happened because i lost my aws account and created EC2 instaces afresh.
-
-![alt text](./ansicbleconfig.png)
-
-![alt text](./ass.png)
-
-Connected to remote server and tried to run ansible all -m ping
-
-Some of the server had the wrong private ip and user stated in the dev.yml file.
-
-I saved and tried to connect to the remote server and got errors connection.
-
-I had to open the ssh config file on my pc to see that the jenkins ansible server ip there is wrong.
-
-I tried againa and same thing. So i checked aws and saw that the server had errors.
-
-So i stopped it and started it. Errors now gone.
-
-Tried to connect agai remotely and connected.
-
-Ran the command ansible all -m ping
-
-It piged al servers minus LB server.
-
-Ignored it and did a cd to the ansible directory amd ran my playbook.
-
-It worked.
-
-
-![alt text](./succed.png)
-
-
-Log into LB server.
-
-![alt text](./wireshark-lost.png)
-
-wireshark has been deleted.
-
-Create a new branch on github.
-
-![alt text](./refactor.png)
-
-Pause all intances on ec2 minus jenkins
-
-Create 2 New Redhat ec2 severs and open ports 80 and port 8080
-
-![alt text](./stop.png)
-
-Update my inventory ansible-config-artifact/inventory/uat.yml file with private IP addresses of your 2 UAT Web servers
-
-![alt text](./uatip.png)
-
-Under ansible folder, in vscode create the following
-
-![alt text](./tree.png)
-
-Now login to the jenkins server via ssh and edit /etc/ansible/ansible.cfg
-
-![alt text](./edit.png)
-
-Within the static-assignments folder, create a new assignment for uat-webservers uat-webservers.yml. This is where you will reference the role.
-
----
-- hosts: uat-webservers
-  roles:
-     - webserver
-
-![alt text](./uato.png)
-
-Edit site.yml to the following
-
----
-- hosts: all
-- import_playbook: ../static-assignments/common.yml
-
-- hosts: uat-webservers
-- import_playbook: ../static-assignments/uat-webservers.yml
-
-
-![alt text](./site.png)
-
-Edit main.yml under tasks folder
-
-and paste in the following
-
----
-- name: install apache
-  become: true
-  ansible.builtin.yum:
-    name: "httpd"
-    state: present
-
-- name: install git
-  become: true
-  ansible.builtin.yum:
-    name: "git"
-    state: present
-
-- name: clone a repo
-  become: true
-  ansible.builtin.git:
-    repo: https://github.com/<your-name>/tooling.git
-    dest: /var/www/html
-    force: yes
-
-- name: copy html content to one level up
-  become: true
-  command: cp -r /var/www/html/html/ /var/www/
-
-- name: Start service httpd, if not started
-  become: true
-  ansible.builtin.service:
-    name: httpd
-    state: started
-
-- name: recursively remove /var/www/html/html/ directory
-  become: true
-  ansible.builtin.file:
-    path: /var/www/html/html
-    state: absent
-
-
-Now do a push to github main branch.
-
-Go to github and do a pull request.
-
-make sure to select main branch as source.
-
-
-![alt text](./pull.png)
-
-
-On bash terminal on vscode do a git checkout main.
-
-and do a git pull  so that the changes from main branch on github matches tha on our pc.
-
-Run ansible playbook
-
-sudo ansible-playbook -i /home/ubuntu/ansible-config-artifact/inventory/uat.yml /home/u
-buntu/ansible-config-artifact/playbooks/site.yml
-
-I got an error.
-
-
-![alt text](./project.png)
-
-So i looked at the site.yml
-
-![alt text](./kk.png)
-
-Host is difeined as all
-
-So it is calling all servers and i stopped the instances LB,DB,Webserver 1, Webserver 2, and NFS
-
-si i went to Ec2 and started all the instance and got success.
-
-![alt text](./winner.png)
-
-Now both sites are loading
-
-![alt text](./final.png)
-
-![alt text](./final2.png)
-
+# Step 1: Jenkins Job Enhancement
+  ## Before we begin, let us make some changes to our Jenkins job - now every new change in the codes creates a separate directory which is not very convenient when we want to run some commands from one place. Besides, it consumes space on Jenkins serves with each subsequent change. Let us enhance it by introducing a new Jenkins project/job - we will require Copy Artifact plugin.
+- ## Go to the Jenkins-ansible server and in the home directory of the ubuntu user, create a new directory named ansible-config-mgt
+
+![](./images/ansible-config-artifact%20dir.PNG)
+![](./images/ec2%20web-uat.PNG)
+![](./images/copy%20artifacts.png)
+
+- ## Change permissions of the folder so Jenkins can save files there.
+  ```
+  sudo chmod -R 777 /home/ubuntu/ansible-config-mgt
+  ```
+![](./images/chmod.PNG)
+
+- ## Go to Jenkins web console -> Manage Jenkins -> Manage Plugins, click on Available tab and search for Copy Artifact. Install this plugin.
+- ## Create a new Freestyle project and name it save_artifacts. This will be triggered on the successful build of your ansible job. Configure accordingly:
+  ![](./images/triggered.png)
+
+  - Click Discard old builds (we select this so Jenkins server will not run out of storage by keeping artifacts of old builds)
+  - Enter Max number of builds to keep (pick any number you think is useful between 2 and 5)
+  - For Build Triggers, select Build after other projects are built and enter ansible in the Projects to watch field.
+  - Create a Build step and choose Copy artifacts from other project, specify ansible as source project and /home/ubuntu/ansible-config-mgt as target directory. For artifacts to copy, enter **. Test setup by editing README.md file in the repo (right in the master branch.)
+  - If both Jenkins jobs build successfully, you should see the artifacts in the ansible-config-mgt directory.
+ ![](./images/build.png)
+ ![](./images/build1.PNG)
+ ![](./images/build2.png)
+
+# Step 2: Refactor Ansible Code
+- ## Pull the new code from GitHub, create and checkout to a new branch named refactor
+    ```
+    git pull origin master
+    git checkout -b refactor
+    
+    # This is where we will make all our refactoring changes before merging into master branch.
+    ```
+![](./images/refractor.PNG)
+
+- ## Within playbooks folder, create site.yml file. This will serve as our primary playbook.
+- ## Create a folder in the root directory of the repo named static-assignments. This is where we will store secondary playbooks (the name of this folder can be anything you like.)
+- ## Move common.yml file to the static-assignments folder
+- ## Inside site.yml file, import the common.yml playbook
+    ```
+    ---
+    - hosts: all
+    - import_playbook: ../static-assignments/common.yml
+    ```
+    This uses the Ansible import_playbook module.
+    Directory structure should look like this:
+    ```
+    ├── static-assignments
+    │   └── common.yml
+    ├── inventory
+        └── dev
+        └── stage
+        └── uat
+        └── prod
+    └── playbooks
+        └── site.yml
+    ```
+![](./images/common-del%20file.PNG)
+![](./images/common-del%20run.PNG)
+
+- ## Run ansible playbook against the dev environment
+  - Create a common-del.yml file to remove wireshark from the dev servers
+    ```
+    ---
+    - name: Update web, NFS and DB servers
+    hosts: webservers, nfs, db, lb
+    become: true
+
+    tasks:
+      - name: Ensure wireshark is deleted
+        package:
+            name: wireshark
+            state: absent
+    ```
+  - Update the site.yml file with:
+    ```
+    - import_playbook: ../static-assignments/common-del.yml
+    ```
+  - Run the playbook
+    ```
+    ansible-playbook -i /home/ubuntu/ansible-config-mgt/inventory/dev.yml /home/ubuntu/ansible-config-mgt/playbooks/site.yaml
+    ```
+    Ensure wireshark is removed by checking one or two of the servers.
+    ![](./images/site%20yml.png)
+
+# Step 3: Configure UAT Webservers with a webserver role
+- ## Stop or terminate every other instance except Jenkins-ansible and launch two RHEL 8 servers named Web1-UAT and Web2-UAT
+- ## To create a role, you must create a roles directory. If you have ansible installed on your local machine, do:
+    ```
+    mkdir roles (in the root directory of your repo)
+    cd roles
+    ansible-galaxy init webserver
+    ```
+    ## If you don't have ansible installed, just create your folders and files like so:
+    ```
+    └── webserver
+        ├── README.md
+        ├── defaults
+        │   └── main.yml
+        ├── handlers
+        │   └── main.yml
+        ├── meta
+        │   └── main.yml
+        ├── tasks
+        │   └── main.yml
+        └── templates
+    ```
+![](./images/file%20directory.PNG)
+![](./images/tree.png)
+![](./images/webserver%20l.png)
+![](./images/webserver%20list.png)
+![](./images/webserver.png)
+- ## Update your ansible-config-mgt/inventory/uat.yml with the private IP address of your UAT webservers.
+    ```
+    [uat-webservers]
+    <Web1-UAT-Server-Private-IP-Address> ansible_ssh_user='ec2-user' ansible_ssh_private_key_file=<path-to-.pem-private-key>
+    <Web2-UAT-Server-Private-IP-Address> ansible_ssh_user='ec2-user' ansible_ssh_private_key_file=<path-to-.pem-private-key>
+    ```
+- ## In the /etc/ansible/ansible.cfg file, uncomment the roles_path attribute and provide the absolute path to your roles folder
+    ```
+    roles_path = /home/ubuntu/ansible-config-mgt/roles
+    ```
+- ## Edit roles/webserver/tasks/main.yml file to do the following:
+  - Install and configure Apache
+  - Clone tooling website from your GitHub repo
+  - Ensure tooling/html is deployed to /var/www/html
+  - Make sure httpd service is started
+    ```
+    ---
+    # tasks file for webserver
+    - name: Install Apache and Git
+      become: yes
+      yum:
+        name:
+          - httpd
+          - git
+        state: present
+
+    - name: Clone tooling app repo
+      become: yes
+      git:
+        repo: "https://github.com/Anefu/tooling.git"
+        dest: ~/app
+        version: "HEAD"
+
+    - name: Copy app to /var/www/html
+      become: yes
+      copy:
+        src: ~/app/html
+        dest: /var/www
+        remote_src: yes
+        mode: "777"
+        owner: apache
+
+    - name: Make sure httpd service is running
+      become: yes
+      service:
+        name: httpd
+        state: started
+    ```
+![](./images/chmod.PNG)
+
+# Step 4: Reference Webserver role
+- ## Within static-assignments folder, create a new file uat-webservers.yml and add the following lines
+    ```
+    ---
+    - hosts: uat-webservers
+      roles:
+         - webserver
+    ```
+    ## and edit your site.yml like so:
+    ```
+    ---
+    - hosts: all
+    - import_playbook: ../static-assignments/common.yml
+
+    - hosts: uat-webservers
+    - import_playbook: ../static-assignments/uat-webservers.yml
+    ```
+![](./images/uat%20process.png)
+![](./images/uat.PNG)
+![](./images/)
+
+# Step 5: Commit and test
+- ## Commit your changes to the refactor branch and push to GitHub, create a pull request and merge with the master branch. The artifacts should be automatically copied to the ansible-config-mgt directory
+- ## Run the playbook against your UAT servers
+    ```
+    ansible-playbook -i /home/ubuntu/ansible-config-mgt/inventory/uat.yml /home/ubuntu/ansible-config-mgt/playbooks/site.yaml
+    ```
+    ![](./images/output.png)
+    ![](./images/output2.png)
+    ![](./images/tooling.PNG)
+    ## You should be able to reach your webservers by \<public-ip-address>/index.php
+
+    ![](./images/project12_architecture.png)
