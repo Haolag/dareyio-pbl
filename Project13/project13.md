@@ -56,7 +56,7 @@ Your layout should now look like this.
     └── webservers.yml
 ```
 
-![rCreate Role](./Images/Roles%201.png)
+![Create Role](./Images/Roles.PNG)
 
 
 Created a role-feature branch to implement the dynamic assignments  of ansible
@@ -117,14 +117,13 @@ Inside `roles` directory create your new MySQL role with `ansible-galaxy install
 ```
 mv geerlingguy.apache/ apacheRole
 
-
-![](./Images/env_var.png)
-
-
-![](./Images/env-vars.png)
+![Env](./Images/env_var1.PNG)
 
 
-![](./Images/Edited.png)
+![EnvV](./Images/Env-Vars2.PNG)
+
+
+![](./Images/Edit.PNG)
 
 
 
@@ -183,11 +182,11 @@ Run Playbook using:
 ansible-playbook -i inventory/uat.yml playbooks/site.yml
 
 
-![Ansible playbook](./Images/Ans%20Playbook%20Run.PNG)
+![Ansible playbook](./Images/Ansible%20Playbook.PNG)
 
-![](./Images/Final%20a.png)
+![](./Images/Final%201.PNG)
 
-![final play](./Images/Fianl%20b.PNG)
+![final play](./Images/Final%202.PNG)
 
 
 ```
