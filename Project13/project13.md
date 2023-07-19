@@ -56,13 +56,10 @@ Your layout should now look like this.
     └── webservers.yml
 ```
 
-![roles created](./Images/roles.PNG)
+![rCreate Role](./Images/Roles%201.png)
 
 
 Created a role-feature branch to implement the dynamic assignments  of ansible
-
-![](./img/1.branch.png)
-
 
 
 ## UPDATE SITE.YML WITH DYNAMIC ASSIGNMENTS
@@ -121,13 +118,13 @@ Inside `roles` directory create your new MySQL role with `ansible-galaxy install
 mv geerlingguy.apache/ apacheRole
 
 
-![](./img/2.env_vars.png)
+![](./Images/env_var.png)
 
 
-![](./img/3.envVars.png)
+![](./Images/env-vars.png)
 
 
-![](./img/4.edits.png)
+![](./Images/Edited.png)
 
 
 
@@ -138,8 +135,6 @@ We want to be able to choose which Load Balancer to use, Nginx or Apache, so we 
 1. Nginx
    
 2. Apache
-
-![install nginx and apache roles](./Images/install%20apache%20and%20nginx.PNG)
 
 
 ## **Important Hints:**
@@ -188,11 +183,11 @@ Run Playbook using:
 ansible-playbook -i inventory/uat.yml playbooks/site.yml
 
 
-![Ansible playbook](./Images/ansible%20playbook%20running.PNG)
+![Ansible playbook](./Images/Ans%20Playbook%20Run.PNG)
 
-![](./img/5.completed.png)
+![](./Images/Final%20a.png)
 
-![final play](./Images/final%20play.PNG)
+![final play](./Images/Fianl%20b.PNG)
 
 
 ```
