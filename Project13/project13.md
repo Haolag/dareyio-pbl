@@ -126,7 +126,7 @@ mv geerlingguy.apache/ apacheRole
 
 ## LOAD BALANCER ROLES
 
-We want to be able to choose which Load Balancer to use, Nginx or Apache, so we need to have two roles respectively:
+We want to be able to choose which Load Balancer to use, Nginx or Apache, Hence, we would need to have two roles respectively:
 
 1. Nginx
    
