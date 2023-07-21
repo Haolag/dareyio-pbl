@@ -114,13 +114,6 @@ mv geerlingguy.nginx/ nginxRole
 Inside `roles` directory create your new MySQL role with `ansible-galaxy install geerlingguy.apache -p .` and rename the folder to `apacheRole`
 
 
-```
-mv geerlingguy.apache/ apacheRole
-
-![effect](./Images/effect%20aa.PNG)
-
-![effect2](./Images/effect%20bb.PNG)
-
 
 
 ## LOAD BALANCER ROLES
