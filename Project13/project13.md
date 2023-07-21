@@ -117,10 +117,9 @@ Inside `roles` directory create your new MySQL role with `ansible-galaxy install
 ```
 mv geerlingguy.apache/ apacheRole
 
-![Env](./Images/effect%20aa.PNG)
+![effect](./Images/effect%20aa.PNG)
 
-
-![EnvV](./Images/effect%20bb.PNG)
+![effect2](./Images/effect%20bb.PNG)
 
 
 
