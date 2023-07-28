@@ -135,8 +135,7 @@ In previous projects, you have been launching Ansible commands manually from a C
     5. Verify in Blue Ocean that all the stages are working, then merge your feature branch to the main branch
     6. Eventually, your main branch should have a successful pipeline like this in blue ocean
     ```
-    Your final pipeline should look like this:
-    ![](imgs/1stjenkins.png)
+    
 
 ### Step 1.4: Running Ansible Playbook from Jenkins
 - Install Ansible on your Jenkins server
@@ -201,8 +200,7 @@ In previous projects, you have been launching Ansible commands manually from a C
     }
     ```
   - Commit and push your changes
-  - Go to Blue Ocean and trigger a build against the branch. If everything is configured properly, you should see something like this:
-    ![](imgs/success1.png)
+  - Go to Blue Ocean and trigger a build against the branch. 
 
 ### Step 1.5: Parameterizing Jenkinsfile for Ansible Development
 To deploy to other environments, we have to use parameters
@@ -218,16 +216,18 @@ To deploy to other environments, we have to use parameters
   ...
   ```
   The above snippet adds a parameter 'inventory' with a default value 'dev' and a description for the parameter. We can use parameters in the Ansible stage by changing the **inventory/dev** to **inventory/${inventory}**
-  ![](imgs/sit.png)
+  ![](./Images/SIT%20a.png)
+
 - Add a new parameter to run specific parts of the Ansible playbook using tags
   ```
   string(name: 'tag', defaultValue: 'all',  description: 'Tags to specify which Ansible plays to run')
   ```
-  ![](imgs/sit_tags.png)
+  
 ## Step 2: CI/CD Pipeline for a TODO Application
 ### Step 2.1: Configure Artifactory
 - Create an Ansible role to install Artifactory (https://github.com/Anefu/ansible-config-mgt/tree/master/roles/artifactory)
 - Run the role against the Artifactory server
+
 ### Step 2.2: Prepare Jenkins
 - Fork the php-todo repository (https://github.com/darey-devops/php-todo.git)
 - Install the following packages:
@@ -245,7 +245,8 @@ To deploy to other environments, we have to use parameters
     ```
     http://<artifactory-server-ip>:8082/artifactory
     ```
-    ![](imgs/frog.png)
+    ![](./Images/Frog%20Homepage.png)
+
 ### Step 2.3: Integrate Artifactory repository with Jenkins
 - Create a dummy Jenkinsfile in the root of the php-todo repo
 - In Blue Ocean, create multibranch pipeline
@@ -334,8 +335,6 @@ Most commonly used tool for php code quality analysis is **phploc**
           }
         }
   ```
-  CLick on the Plots button on the left pane. If everything was configured properly, you should see something like this:
-  ![](imgs/plots.png)
 
 - Package the artifacts 
   ```
@@ -364,7 +363,7 @@ Most commonly used tool for php code quality analysis is **phploc**
   }
   ```
   **Blocker:** For this to work, you have to create a local repository on your Artifactory with package type as Generic and Repository Key as the name of the repo (php-todo in this case)
-  ![](imgs/arti-deploy.png)
+  ![](./Images/Arti-Deployment.png)
 
 - Deploy application to dev environment by launching the Ansible pipeline 
   ```
@@ -576,7 +575,7 @@ Since Sonarqube cannot be run as root user, we have to create a **sonar** user t
       ```
 ### Step 3.5: Access Sonarqube
 - Access the SonarQube by going to http://\<sonar-qube-ip>/9000, use **admin** as your username and password
-![](imgs/sonar.png)
+![](./Images/Sonar%20view.png)
 - If you are having a timeout error, check the security group attached to the Sonarqube instance.
 
 ### Step 3.6: Configure SonarQube and Jenkins for Quality Gate
@@ -640,8 +639,11 @@ Since Sonarqube cannot be run as root user, we have to create a **sonar** user t
   ```
   **Blocker:** the sonar.php.coverage.reportPaths and sonar.php.tests.reportPath should point to the files in build/coverage/ or else the Quality Gate would be incomplete
 - To generate pipleline code from Jenkins UI, go to Dashboard, click on the pipeline project (php-todo) and scroll down to Pipeline Syntax
-- If everything was configured properly, you should see something like this: ![](imgs/endtoend.png)
-- Navigate to your php-todo dashboard on SonarQube UI ![](imgs/qualitygate.png)
+- If everything was configured properly, you should see something like this:
+ ![End](./Images/End-to-End.png)
+
+- Navigate to your php-todo dashboard on SonarQube UI
+ 
 
 ### Step 3.7: Conditionally Deploy to Higher Environments
 - Include a **when** condition to execute the Quality Gate stage only when the running branch is develop, hotfix, release, main or master
@@ -672,9 +674,10 @@ Since Sonarqube cannot be run as root user, we have to create a **sonar** user t
     }
   ```
   You should get the following when you run the pipeline:
-  ![](imgs/timeout.png)
+  ![Time out](./Images/Time%20out%20line.png)
+
   For specific branches (Quality Gate does not execute I am running from 'testing' branch):
-  ![](imgs/branch-testing.png)
+
 
 ## Step 4: Configure Jenkins slave servers
 - Spin up a new EC2 Instance
@@ -714,14 +717,12 @@ Since Sonarqube cannot be run as root user, we have to create a **sonar** user t
   - For Host Key Verification Strategy, select Manually trusted key validation strategy
   - Click Save
 
-- Repeat the above steps to add more servers ![](imgs/jenkins-nodes.png)
+- Repeat the above steps to add more servers 
+
 
 ## Step 5: Configure GitHub WebHook for Automatic Build of Pushed Code
-[![Watch the video](imgs/webhook.png)](https://drive.google.com/file/d/1gaR43fdd3nGOi85pcp4GgcHQAv92A4Df/view?usp=sharing)
+[![WebHook](./Images/Webhook%20page.png))
 
 ## Step 6: Deploy to all Environments
-![](imgs/endtoend.png)
 
-![Instances](imgs/instances.png)
-
-Link to pipeline video: https://drive.google.com/file/d/1eLdDW0cYQoWCXn6C3dPmD2om4PEsBwcx/view?usp=sharing
+![Instances](./Images/Instances%20view.png)
