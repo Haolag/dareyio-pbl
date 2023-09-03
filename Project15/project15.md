@@ -286,7 +286,7 @@ The ALB for the webservers should not be internet facing. And we'll need two ALB
 - Give the key an alias
 - For 'Define Key admininstrative privileges', select AWSServiceRoleForRDS and OrganizationAccountAccessRole
  ![](./Images/kms-config.png)
- 
+
 - Select the same thing for Key usage
 - Click Finish
   ![](./Images/kms.png)
@@ -325,7 +325,7 @@ The ALB for the webservers should not be internet facing. And we'll need two ALB
 
 ### Step 5.2
 - Create two config files (one for tooling, one for wordpress) for the nginx load balancer and add to a github repo so you can pull the config during a scale out
-- The tooling config file should contain the following settings: 
+- The tooling configuration files should contain the following settings: 
   ```
   server {
     server_name tooling.domain.com; # company tooling site
@@ -339,7 +339,7 @@ The ALB for the webservers should not be internet facing. And we'll need two ALB
 	  }
   }
   ```
-  The wordpress config file:
+  The wordpress config files:
   ```
   server {
     server_name domain.com www.domain.com; # company tooling site
