@@ -1,5 +1,5 @@
 # K8s From Grounds Up
-![Kubernetes Architecture](imgs/K8s_architecture.png)
+![Kubernetes Architecture](./Images/K8s_architecture.png)
 
 ## Install Client Tools
 Tools:
@@ -76,30 +76,30 @@ Tools:
 - ETCD encryption should be 32 bytes (head -c 32 /dev/urandom | base64)
 - Create encyption-config.yaml file
 - Bootstrap etcd cluster
-  ![](imgs/etcd-status.png)
+  ![](./Images/etcd-status.png)
 
 ## Bootstrap controlplane
 - Create /etc/kubernetes/config directory
 - Download and install kubectl, kube-apiserver, kube-scheduler and kube-controller-manager
 - Configure each of the services
-  ![](imgs/apiserver-status.png)
-  ![](imgs/controller-status.png)
-  ![](imgs/scheduler-status.png)
+  ![](./Images/apiserver-status.png)
+  ![](./Images/controller-status.png)
+  ![](./Images/scheduler-status.png)
 
 ## Test current setup
 ```
 kubectl cluster-info --kubeconfig admin.kubeconfig
 ```
-![](imgs/cluster-info.png)
+![](./Images/cluster-info.png)
 ```
 kubectl get namespaces --kubeconfig admin.kubeconfig
 ```
-![](imgs/namespaces.png)
+![](./Images/namespaces.png)
 ```
 curl --cacert /var/lib/kubernetes/ca.pem https://$INTERNAL_IP:6443/version
 ```
-![](imgs/curl-version.png)
-![](imgs/componentstatuses.png)
+![](./Images/curl-version.png)
+![](./Images/componentstatuses.pngg)
 
 ## Configuring the worker nodes
 - Create and apply cluster role binding for kubelet
@@ -143,8 +143,8 @@ curl --cacert /var/lib/kubernetes/ca.pem https://$INTERNAL_IP:6443/version
         name: kubernetes
     EOF
   ```
-![](imgs/clusterrole.png)
-![](imgs/clusterrole-binding.png)
+![](./Images/clusterrole-binding.png)
+![](./Images/clusterrole.png)
 - Install OS dependencies
   ```
   {
@@ -284,10 +284,10 @@ curl --cacert /var/lib/kubernetes/ca.pem https://$INTERNAL_IP:6443/version
 - Create the kubelet-config.yaml file
 - Configure kubelet and kube-proxy systemd service
   - Kubelet service
-  ![](imgs/kubelet-status.png)
+  ![](./Images/kubelet-status.png)
   - Kube-proxy service
-  ![](imgs/kubeproxy-status.png)
+  ![](./Images/kubeproxy-status.png)
   - `kubectl get nodes`
-  ![](imgs/get-nodes.png)
+  ![](./Images/get-nodes.png)
 
 Link to Terraform and Ansible scripts to deploy the architecture from scratch: https://github.com/Anefu/K8s-from-ground-up
